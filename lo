@@ -1,0 +1,32 @@
+import cv2
+import numpy as np
+
+image1_path = "images.jpeg"
+image2_path = "download.jpeg"
+
+image1 = cv2.imread(image1_path)
+image2 = cv2.imread(image2_path)
+
+if image1 is None or image2 is None:
+    print("Error: One or both images could not be loaded.")
+    exit()
+
+image1 = cv2.resize(image1, (300, 300))
+image2 = cv2.resize(image2, (300, 300))
+
+bitwise_and = cv2.bitwise_and(image1, image2)
+bitwise_or = cv2.bitwise_or(image1, image2)
+bitwise_xor = cv2.bitwise_xor(image1, image2)
+bitwise_not1 = cv2.bitwise_not(image1)
+bitwise_not2 = cv2.bitwise_not(image2)
+
+cv2.imshow("Image 1", image1)
+cv2.imshow("Image 2", image2)
+cv2.imshow("Bitwise AND", bitwise_and)
+cv2.imshow("Bitwise OR", bitwise_or)
+cv2.imshow("Bitwise XOR", bitwise_xor)
+cv2.imshow("Bitwise NOT (Image 1)", bitwise_not1)
+cv2.imshow("Bitwise NOT (Image 2)", bitwise_not2)
+
+cv2.waitKey(0)
+cv2.destroyAllWindows()
