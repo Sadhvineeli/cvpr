@@ -1,0 +1,29 @@
+import cv2
+import numpy as np
+
+def log_transformation(image):
+    c = 255 / np.log(1 + np.max(image))
+    log_image = c * np.log(1 + image.astype(np.float32))
+    return np.uint8(log_image)
+
+def power_law_transformation(image, gamma):
+    c = 255 / (np.max(image) ** gamma)
+    power_image = c * (image.astype(np.float32) ** gamma)
+    return np.uint8(power_image)
+
+image_path = "download.jpeg"
+image = cv2.imread(image_path, cv2.IMREAD_COLOR)
+
+if image is None:
+    print("Error: Image could not be loaded.")
+    exit()
+
+log_image = log_transformation(image)
+power_image = power_law_transformation(image, 0.5)
+
+cv2.imshow("Original Image", image)
+cv2.imshow("Log Transformation", log_image)
+cv2.imshow("Power Law Transformation", power_image)
+
+cv2.waitKey(0)
+cv2.destroyAllWindows()
