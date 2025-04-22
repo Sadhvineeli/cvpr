@@ -1,0 +1,29 @@
+import cv2
+import numpy as np
+
+# Read the image
+img = cv2.imread('download.jpeg', 0)
+if img is None:
+    print("Image not found.")
+    exit()
+
+# Flatten image to 1D array (vector)
+data = np.float32(img.reshape(-1, 1))
+
+# Apply PCA
+mean, eigvec = cv2.PCACompute(data, mean=None)
+
+# Project the data to PCA space (reduce dimensions)
+pca_proj = cv2.PCAProject(data, mean, eigvec)
+
+# Reconstruct the image from the PCA components
+reconstructed = cv2.PCABackProject(pca_proj, mean, eigvec)
+
+# Reshape back to original image shape
+reconstructed_img = np.uint8(reconstructed.reshape(img.shape))
+
+# Show the original and PCA reconstructed images
+cv2.imshow('Original Image', img)
+cv2.imshow('PCA Reconstructed Image', reconstructed_img)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
