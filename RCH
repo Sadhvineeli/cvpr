@@ -1,0 +1,20 @@
+import cv2
+import numpy as np
+
+img = cv2.imread('download.jpeg')
+
+
+# Convert BGR to RGB
+rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+
+# RGB to CMY
+cmy = 255 - rgb
+
+# RGB to HSV
+hsv = cv2.cvtColor(rgb, cv2.COLOR_RGB2HSV)
+
+cv2.imshow('Original (RGB)', rgb)
+cv2.imshow('CMY', cmy)
+cv2.imshow('HSV', hsv)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
