@@ -1,0 +1,40 @@
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+
+def calculate_cdf(hist):
+    cdf = hist.cumsum()
+    cdf_normalized = cdf / float(cdf[-1])
+    return cdf_normalized
+
+def histogram_specification(source, reference):
+    src = cv2.cvtColor(source, cv2.COLOR_BGR2GRAY)
+    ref = cv2.cvtColor(reference, cv2.COLOR_BGR2GRAY)
+
+    src_hist, _ = np.histogram(src.flatten(), 256, [0, 256])
+    ref_hist, _ = np.histogram(ref.flatten(), 256, [0, 256])
+
+    src_cdf = calculate_cdf(src_hist)
+    ref_cdf = calculate_cdf(ref_hist)
+
+    mapping = np.zeros(256, dtype=np.uint8)
+    for src_val in range(256):
+        diff = np.abs(ref_cdf - src_cdf[src_val])
+        mapping[src_val] = np.argmin(diff)
+
+    matched = mapping[src]
+    return matched
+
+# Load images
+source_img = cv2.imread('source.jpg')
+reference_img = cv2.imread('reference.jpg')
+
+# Apply histogram specification
+matched_img = histogram_specification(source_img, reference_img)
+
+# Show results
+cv2.imshow('Source Image', cv2.cvtColor(source_img, cv2.COLOR_BGR2GRAY))
+cv2.imshow('Reference Image', cv2.cvtColor(reference_img, cv2.COLOR_BGR2GRAY))
+cv2.imshow('Matched Image', matched_img)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
