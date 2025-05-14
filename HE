@@ -1,0 +1,38 @@
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+
+
+img = cv2.imread('download.jpeg', cv2.IMREAD_GRAYSCALE)
+
+
+equalized_img = cv2.equalizeHist(img)
+
+
+hist_original = cv2.calcHist([img], [0], None, [256], [0, 256])
+hist_equalized = cv2.calcHist([equalized_img], [0], None, [256], [0, 256])
+
+
+cv2.imshow('Original Image', img)
+cv2.imshow('Equalized Image', equalized_img)
+
+
+plt.figure(figsize=(10, 6))
+
+
+plt.subplot(1, 2, 1)
+plt.plot(hist_original)
+plt.title('Original Image Histogram')
+plt.xlim([0, 256])
+
+
+plt.subplot(1, 2, 2)
+plt.plot(hist_equalized)
+plt.title('Equalized Image Histogram')
+plt.xlim([0, 256])
+
+plt.tight_layout()
+plt.show()
+
+cv2.waitKey(0)
+cv2.destroyAllWindows()
