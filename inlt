@@ -1,0 +1,22 @@
+import cv2
+import numpy as np
+
+# Load the image in grayscale
+img = cv2.imread('download.jpeg', cv2.IMREAD_GRAYSCALE)
+
+# ---------- Image Negative ----------
+neg = 255 - img
+
+# ---------- Logarithmic Transformation ----------
+# Add 1 to avoid log(0) and apply scaling factor c
+c = 255 / np.log(1 + np.max(img))
+log_transformed = c * np.log(1 + img)
+log_transformed = np.array(log_transformed, dtype=np.uint8)
+
+# ---------- Display all ----------
+cv2.imshow('Original Image', img)
+cv2.imshow('Negative Image', neg)
+cv2.imshow('Log Transformed Image', log_transformed)
+
+cv2.waitKey(0)
+cv2.destroyAllWindows()
